@@ -143,8 +143,6 @@ void analog_io(chanend in_chan, chanend out_chan)
 
     start_clock(s_sclk_clk);
 
-    // Basic mixer. This will be moved out of this module at some point,
-    // right now this is just there for testing.
     while (1)
     {
         s_lrclk_port <: lrclk;
