@@ -13,4 +13,6 @@ typedef enum
 
 void analog_init(sample_rate_t sample_rate);
 
+void analog_io(chanend in_chan, chanend out_chan);
+
 #endif

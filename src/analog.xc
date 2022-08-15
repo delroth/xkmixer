@@ -115,7 +115,10 @@ void analog_init(sample_rate_t sample_rate)
 
     printf("CS5368 REVI: %d\n", revi1);
     printf("CS4384 REVI: %d\n", revi2);
+}
 
+void analog_io(chanend in_chan, chanend out_chan)
+{
     u32 lrclk = 0xFFFF0000;
 
     set_clock_on(s_sclk_clk);
@@ -152,15 +155,19 @@ void analog_init(sample_rate_t sample_rate)
             u32 s;
             s16 l, r;
             s_adc_ports[i] :> s;
-            l = (s16)(bitrev(s) >> 16);
-            r = (s16)bitrev(s);
-            tl += l;
-            tr += r;
+            s = bitrev(s);
+            l = (s16)(s >> 16);
+            r = (s16)s;
+
+            in_chan <: l;
+            in_chan <: r;
         }
-        u32 tot = bitrev(((u32)tl << 16) | ((u32)tr & 0xFFFF));
         for (int i = 0; i < 4; ++i)
         {
-            s_dac_ports[i] <: tot;
+            s16 l, r;
+            out_chan :> l;
+            out_chan :> r;
+            s_dac_ports[i] <: bitrev(((u32)l << 16) | ((u32)r & 0xFFFF));;
         }
     }
 }
