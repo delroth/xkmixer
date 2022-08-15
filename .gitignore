@@ -1,0 +1,7 @@
+# Eclipse / xTIMEcomposer files.
+.cproject
+.project
+.settings
+
+# Build outputs.
+.build_*
